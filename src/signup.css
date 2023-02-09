@@ -1,0 +1,42 @@
+.signup-form {
+  width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 50px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #333;
+}
+
+.signup-form .input-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.signup-form input[type='text'],
+.signup-form input[type='email'],
+.signup-form input[type='password'] {
+  width: calc(50% - 15px);
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.signup-form button[type='submit'] {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  font-size: 18px;
+  border: 0;
+  border-radius: 5px;
+}
