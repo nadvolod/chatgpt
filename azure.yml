@@ -57,19 +57,3 @@ stages:
           displayName: 'Run the test suite'
           inputs:
             command: 'run test'
-
-  - stage: Deploy
-    displayName: Deploy the React Web App to Azure
-    dependsOn: Test
-    jobs:
-      - job: Deploy
-        displayName: Deploy
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-        - task: AzureWebApp@1
-          displayName: 'Deploy to Azure Web App'
-          inputs:
-            azureSubscription: '<Azure subscription name>'
-            appName: $(webAppName)
-            package: '$(System.DefaultWorkingDirectory)/$(buildArtifactName)/drop'
