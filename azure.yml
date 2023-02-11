@@ -1,0 +1,75 @@
+# React Web App Build and Deployment pipeline
+# Triggered when changes are pushed to the master branch
+trigger:
+  branches:
+    include:
+    - master
+
+# Define variables used in the pipeline
+variables:
+  # Name of the build artifact
+  buildArtifactName: 'react-web-app'
+  # Name of the web app in Azure
+  webAppName: 'my-react-web-app'
+
+# Define the stages in the pipeline
+stages:
+  - stage: Build
+    displayName: Build the React Web App
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - task: NodeTool@0
+          displayName: 'Install Node.js'
+          inputs:
+            versionSpec: '14'
+        - task: Npm@1
+          displayName: 'Install npm dependencies'
+          inputs:
+            command: 'install'
+        - task: Npm@1
+          displayName: 'Build the React Web App'
+          inputs:
+            command: 'run build'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Build Artifacts'
+          inputs:
+            artifactName: $(buildArtifactName)
+            artifactType: 'container'
+            pathToPublish: 'build'
+
+  - stage: Test
+    displayName: Test the React Web App
+    jobs:
+      - job: Test
+        displayName: Test
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - task: Npm@1
+          displayName: 'Install npm dependencies'
+          inputs:
+            command: 'install'
+        - task: Npm@1
+          displayName: 'Run the test suite'
+          inputs:
+            command: 'run test'
+
+  - stage: Deploy
+    displayName: Deploy the React Web App to Azure
+    dependsOn: Test
+    jobs:
+      - job: Deploy
+        displayName: Deploy
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - task: AzureWebApp@1
+          displayName: 'Deploy to Azure Web App'
+          inputs:
+            azureSubscription: '<Azure subscription name>'
+            appName: $(webAppName)
+            package: '$(System.DefaultWorkingDirectory)/$(buildArtifactName)/drop'
