@@ -39,4 +39,9 @@ describe('SignUp Form', () => {
     cy.get('button[type="submit"]').click();
     cy.get('@console.log').should('be.calledWith', 'John Doe john.doe@example.com secret123');
   });
+  it('meets accessibility standards', () => {
+    cy.visit('');
+    cy.injectAxe();
+    cy.checkA11y();
+  });
 });
